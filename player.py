@@ -32,6 +32,7 @@ def start_playing(uuid, ytid):
 	if os.path.exists(path_for(ytid)):
 		current_uuid = uuid
 		player.loadfile(path_for(ytid))
+		assert player.filename is not None
 		should_be_paused = False
 
 def stop_playing():
