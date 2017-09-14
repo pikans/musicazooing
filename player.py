@@ -30,14 +30,14 @@ redis = redis.Redis()
 if display_video:
 	subprocess.check_call(os.path.join(os.path.dirname(os.path.abspath(__file__)), "configure-screen.sh"))
 
-def start_playing(uuid, ytid):
+def start_playing(uuid, media_id):
 	global current_uuid, should_be_paused
 	if current_uuid is not None:
 		stop_playing()
 	assert player.filename is None
-	if os.path.exists(path_for(ytid)):
+	if os.path.exists(path_for(media_id)):
 		current_uuid = uuid
-		player.loadfile(path_for(ytid))
+		player.loadfile(path_for(media_id))
 		assert player.filename is not None
 		should_be_paused = False
 
@@ -81,14 +81,14 @@ while True:
 	if removed_uuid and quent and removed_uuid == json.loads(quent.decode())["uuid"]:
 		print("DEQUEUE")
 		ent = redis.lpop("musicaqueue")
-		redis.set("musicatime.%s" % json.loads(quent.decode())["ytid"], time.time())
+		redis.set("musicatime.%s" % json.loads(quent.decode())["media_id"], time.time())
 		redis.rpush("musicaudit", "dequeued entry %s at %s because process ended" % (ent, time.ctime()));
 		quent = redis.lindex("musicaqueue", 0)
 	if quent:
 		quent = json.loads(quent.decode())
 		if quent["uuid"] != current_uuid:
-			redis.set("musicatime.%s" % quent["ytid"], time.time())
-			start_playing(quent["uuid"], quent["ytid"])
+			redis.set("musicatime.%s" % quent["media_id"], time.time())
+			start_playing(quent["uuid"], quent["media_id"])
 	elif current_uuid is not None:
 		stop_playing()
 	time.sleep(0.5)

@@ -306,11 +306,12 @@ class Musicazoo:
 		youtube_id = query_search(youtube_id) if youtube_id else None
 		if not youtube_id:
 			return json.dumps({"success": False})
-		redis.rpush("musicaqueue", json.dumps({"ytid": youtube_id, "uuid": str(uuid.uuid4())}))
-		redis.rpush("musicaload", youtube_id)
-		redis.incr("musicacommon.%s" % youtube_id)
-		redis.sadd("musicacommonset", youtube_id)
-		redis.set("musicatime.%s" % youtube_id, time.time())
+		media_id = "yt:%s" % youtube_id
+		redis.rpush("musicaqueue", json.dumps({"media_id": media_id, "uuid": str(uuid.uuid4())}))
+		redis.rpush("musicaload", media_id)
+		redis.incr("musicacommon.%s" % media_id)
+		redis.sadd("musicacommonset", media_id)
+		redis.set("musicatime.%s" % media_id, time.time())
 		return {"success": True}
 
 	@cherrypy.expose
@@ -319,7 +320,7 @@ class Musicazoo:
 		elems = self.elems()
 		raw_status = redis.get("musicastatus")
 		playback_status = json.loads(raw_status.decode()) if raw_status else {}
-		return dict(playback_status, **{"listing": elems, "titles": self.titles(set(elem["ytid"] for elem in elems)), "loaded": self.loaded(set(elem["ytid"] for elem in elems)), "volume": get_volume()})
+		return dict(playback_status, **{"listing": elems, "titles": self.titles(set(elem["media_id"] for elem in elems)), "loaded": self.loaded(set(elem["media_id"] for elem in elems)), "volume": get_volume()})
 
 	@cherrypy.expose
 	def delete(self, uuid):
@@ -407,9 +408,10 @@ class Musicazoo:
 		youtube_id = query_search(random.choice(nonrecent), search=False) if youtube_id else None
 		if not youtube_id:
 			return {"success": False}
-		redis.rpush("musicaqueue", json.dumps({"ytid": youtube_id, "uuid": str(uuid.uuid4())}))
-		redis.rpush("musicaload", youtube_id)
-		redis.set("musicatime.%s" % youtube_id, time.time())
+		media_id = "yt:%s" % youtube_id
+		redis.rpush("musicaqueue", json.dumps({"ytid": media_id, "uuid": str(uuid.uuid4())}))
+		redis.rpush("musicaload", media_id)
+		redis.set("musicatime.%s" % media_id, time.time())
 		return {"success": True, "ytid": youtube_id}
 
 cherrypy.config.update({'server.socket_port': 8000})
