@@ -306,14 +306,13 @@
             function updateQueue(data) {
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
-                    total += "<li class='list-group-item'><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
+                    total += "<li class='list-group-item'><span></span> | <button>delete</button></li>";
                 }
                 queue.innerHTML = total;
                 for (var i = 0; i < data.listing.length; i++) {
+                    queue.children[i].id = data.listing[i].uuid;
                     var span = queue.children[i].children[0];
                     var deleter = queue.children[i].children[1];
-                    var up = queue.children[i].children[2];
-                    var down = queue.children[i].children[3];
                     var ytid = data.listing[i].ytid;
                     var title = data.titles[ytid] || ytid;
                     if (!data.titles[ytid] || !data.loaded[ytid]) {
