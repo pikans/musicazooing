@@ -2,6 +2,7 @@ import cherrypy
 import random
 import time
 import os
+import os.path
 import redis
 import json
 import uuid
@@ -234,7 +235,7 @@ cherrypy.tree.mount(Musicazoo(), os.getenv("MZ_LOCATION") or "/",
       config={
         '/static/': {
                 'tools.staticdir.on': True,
-                'tools.staticdir.dir': "static"
+                'tools.staticdir.dir': os.path.join(os.getcwd(),"static")
                   }
       }
     )
