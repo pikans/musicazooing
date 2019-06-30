@@ -334,7 +334,7 @@
                     current_volume = data.volume;
                     slider.value = current_volume !== null ? current_volume : 50;
 
-                    if (data.listing != playlist) {
+                    if (data.listing.map(x => x.uuid) !== playlist.map(x => x.uuid)) {
                         playlist = data.listing;
                         updateQueue(data);
                     }
