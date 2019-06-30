@@ -186,6 +186,9 @@
 
             var pausebtn = document.getElementById("pause");
             var random = document.getElementById("random");
+
+            var playlist;
+
             $( function() {
                 $( "#queue" ).sortable();
                 $( "#queue" ).disableSelection();
@@ -274,61 +277,68 @@
             reboot.onclick = function() {
                 json_request(function () {}, default_err, "reboot");
             };
-            function refresh() {
-            json_request(function(data) {
-                if (data.listing.length > 0 && data.loaded[data.listing[0].ytid]) {
-                    playingtitle.textContent = data.titles[data.listing[0].ytid];
-                    playingtime.textContent = secs_to_hms(data.time);
-                    playinglength.textContent = secs_to_hms(data.length);
-                    if (data.paused) {
-                        paused.style.display = "";
-                    } else {
-                        paused.style.display = "none";
-                    }
-                    nowplaying.style.display = "";
-                    pausebtn.disabled = false
-                } else {
-                    nowplaying.style.display = "none";
-                    pausebtn.disabled = true
-                }
-                if (data.reboot_ok) {
-                    document.getElementById("reboot-div").style.display ="";
-                }
 
-                current_volume = data.volume;
-                slider.value = current_volume !== null ? current_volume : 50;
-
+            function updateQueue() {
                 var total = "";
-                for (var i = 0; i < data.listing.length; i++) {
+                for (var i = 0; i < playlist.length; i++) {
                     total += "<li class='list-group-item'><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
                 }
                 queue.innerHTML = total;
-                for (var i = 0; i < data.listing.length; i++) {
+                for (var i = 0; i < playlist.length; i++) {
                     var span = queue.children[i].children[0];
                     var deleter = queue.children[i].children[1];
                     var up = queue.children[i].children[2];
                     var down = queue.children[i].children[3];
-                    var ytid = data.listing[i].ytid;
+                    var ytid = playlist[i].ytid;
                     var title = data.titles[ytid] || ytid;
                     if (!data.titles[ytid] || !data.loaded[ytid]) {
                         title += " (loading)";
                     }
                     span.innerText = title;
-                    deleter.onclick = (function() { delete_uuid(this); }).bind(data.listing[i].uuid);
+                    deleter.onclick = (function() { delete_uuid(this); }).bind(playlist[i].uuid);
                     if (i == 0) {
                         up.style.display = "none";
                     }
                     up.onclick = function() {
                         reorder(this, -1);
-                    }.bind(data.listing[i].uuid);
-                    if (i == data.listing.length - 1) {
+                    }.bind(playlist[i].uuid);
+                    if (i == playlist.length - 1) {
                         down.style.display = "none";
                     }
                     down.onclick = function() {
                         reorder(this, +1);
-                    }.bind(data.listing[i].uuid);
+                    }.bind(playlist[i].uuid);
                 }
-            }, default_err, "status");
+            }
+            function refresh() {
+                json_request(function(data) {
+                    if (data.listing.length > 0 && data.loaded[data.listing[0].ytid]) {
+                        playingtitle.textContent = data.titles[data.listing[0].ytid];
+                        playingtime.textContent = secs_to_hms(data.time);
+                        playinglength.textContent = secs_to_hms(data.length);
+                        if (data.paused) {
+                            paused.style.display = "";
+                        } else {
+                            paused.style.display = "none";
+                        }
+                        nowplaying.style.display = "";
+                        pausebtn.disabled = false
+                    } else {
+                        nowplaying.style.display = "none";
+                        pausebtn.disabled = true
+                    }
+                    if (data.reboot_ok) {
+                        document.getElementById("reboot-div").style.display ="";
+                    }
+
+                    current_volume = data.volume;
+                    slider.value = current_volume !== null ? current_volume : 50;
+
+                    if (data.listing != playlist) {
+                        playlist = data.listing;
+                        updateQueue();
+                    }
+                }, default_err, "status");
             };
             setInterval(refresh, 1000);
         })();
