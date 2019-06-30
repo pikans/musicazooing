@@ -129,8 +129,6 @@
             var suggestions = document.getElementById("suggestions");
             var suggest = document.getElementById("suggest");
             var slider = document.getElementById("vol");
-            var output = document.getElementById("show-vol");
-            output.innerHTML = slider.value;
 
             var pausebtn = document.getElementById("pause");
             var random = document.getElementById("random");
@@ -147,7 +145,6 @@
             };
 
             slider.oninput = function() {
-                output.innerHTML = this.value;
                 set_volume(this.value);
             } 
 
@@ -242,7 +239,6 @@
 
                 current_volume = data.volume;
                 slider.value = current_volume !== null ? current_volume : 50;
-                output.innerHTML = current_volume !== null ? current_volume : "loading";
 
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
