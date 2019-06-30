@@ -230,7 +230,15 @@ class Musicazoo:
 
 cherrypy.config.update({'server.socket_port': 8000})
 
-cherrypy.tree.mount(Musicazoo(), os.getenv("MZ_LOCATION") or "/")
+cherrypy.tree.mount(Musicazoo(), os.getenv("MZ_LOCATION") or "/",
+      config={
+        '/static/': {
+                'tools.staticdir.on': True,
+                'tools.staticdir.dir': "static"
+                  }
+      }
+    )
+
 
 cherrypy.engine.start()
 cherrypy.engine.block()
