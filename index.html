@@ -34,13 +34,60 @@
         #queue{
             color:black;
         }
+
+
+
+        .banner{
+            border: 2px solid black;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .div1 {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
+        }
+
+        .div2 {
+            display: inline-block;
+            animation: marquee2 10s linear infinite;
+            animation-delay: 0s;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes marquee2 {
+            from {
+                transform: translateX(0%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+
+
     </style>
 
 </head>
 <body>
     <div class="jumbotron">
-        <h1><b>AAA</b></h1>      
-        <p class="text-truncate">Play it and suffer.</p>
+        <h1><b>MUSICAZOO</b></h1>      
+        
+
+    <div class="banner">
+        <div class="div1">&nbsp;Play it and Suffer.</div>
+        <div class="div2">&nbsp;Play it and Suffer.</div>
+    </div>
+      
+      
     </div>
     <div class="container-fluid fill">
             <p id="nowplaying" style="display: none;">Now Playing:
@@ -74,7 +121,7 @@
             <h3>Queued items:</h3>
             <div class="m-4">
                 <ul id="queue" class="m-4 list-group">
-                    <li>Loading...</li>
+                    <li class='list-group-item'>Loading...</li>
                 </ul>
             </div>
             <div id="reboot-div"><p><button id="reboot">emergency reboot</button></p></div>
@@ -143,6 +190,7 @@
                 $( "#queue" ).sortable();
                 $( "#queue" ).disableSelection();
             } );
+            $('.banner').width($('.jumbotron').width());
             function clear_suggestions() {
                 suggestions.innerHTML = "";
             }
