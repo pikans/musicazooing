@@ -121,7 +121,7 @@ class Musicazoo:
 		playback_status["titles"] = self.titles(set(elem["ytid"] for elem in elems))
 		playback_status["loaded"] = self.loaded(set(elem["ytid"] for elem in elems))
 		playback_status["volume"] = get_volume()
-    playback_status["reboot_ok"] = reboot_ok
+		playback_status["reboot_ok"] = reboot_ok
 		return playback_status
 
 	@cherrypy.expose
