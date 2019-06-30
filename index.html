@@ -194,6 +194,7 @@
             var random = document.getElementById("random");
 
             var playlist = [];
+            var slider_lock = false;
 
             $( function() {
                 $( "#queue" ).sortable();
@@ -203,15 +204,14 @@
                 suggestions.innerHTML = "";
             }
 
-            var current_volume = null;
             function set_volume(vol) {
-                current_volume = vol;
                 json_request(function() {}, default_err, "setvolume?vol=" + vol);
-                return current_volume;
             };
 
             slider.oninput = function() {
+                slider_lock = true;
                 set_volume(this.value);
+                setTimeout(function () { slider_lock = false; }, 1000);
             } 
 
             random.onclick = function() {
@@ -348,8 +348,9 @@
                         document.getElementById("reboot-div").style.display ="";
                     }
 
-                    current_volume = data.volume;
-                    slider.value = current_volume !== null ? current_volume : 50;
+                    if (!slider_lock) {
+                        slider.value = data.volume !== null ? data.volume : 50;
+                    }
 
                     if (!arraysEqual(data.listing.map(x => x.uuid), playlist.map(x => x.uuid))) {
                         playlist = data.listing;
