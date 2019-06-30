@@ -195,6 +195,7 @@
 
             var playlist = [];
             var slider_lock = false;
+            var slider_lock_timeout;
 
             $( function() {
                 $( "#queue" ).sortable();
@@ -209,9 +210,12 @@
             };
 
             slider.oninput = function() {
+                if (slider_lock_timeout) {
+                    clearTimeout(slider_lock_timeout);
+                }
                 slider_lock = true;
                 set_volume(this.value);
-                setTimeout(function () { slider_lock = false; }, 1000);
+                slider_lock_timeout = setTimeout(function () { slider_lock = false; }, 1000);
             } 
 
             random.onclick = function() {
