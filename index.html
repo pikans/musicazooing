@@ -278,36 +278,36 @@
                 json_request(function () {}, default_err, "reboot");
             };
 
-            function updateQueue() {
+            function updateQueue(data) {
                 var total = "";
-                for (var i = 0; i < playlist.length; i++) {
+                for (var i = 0; i < data.listing.length; i++) {
                     total += "<li class='list-group-item'><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
                 }
                 queue.innerHTML = total;
-                for (var i = 0; i < playlist.length; i++) {
+                for (var i = 0; i < data.listing.length; i++) {
                     var span = queue.children[i].children[0];
                     var deleter = queue.children[i].children[1];
                     var up = queue.children[i].children[2];
                     var down = queue.children[i].children[3];
-                    var ytid = playlist[i].ytid;
+                    var ytid = data.listing[i].ytid;
                     var title = data.titles[ytid] || ytid;
                     if (!data.titles[ytid] || !data.loaded[ytid]) {
                         title += " (loading)";
                     }
                     span.innerText = title;
-                    deleter.onclick = (function() { delete_uuid(this); }).bind(playlist[i].uuid);
+                    deleter.onclick = (function() { delete_uuid(this); }).bind(data.listing[i].uuid);
                     if (i == 0) {
                         up.style.display = "none";
                     }
                     up.onclick = function() {
                         reorder(this, -1);
-                    }.bind(playlist[i].uuid);
-                    if (i == playlist.length - 1) {
+                    }.bind(data.listing[i].uuid);
+                    if (i == data.listing.length - 1) {
                         down.style.display = "none";
                     }
                     down.onclick = function() {
                         reorder(this, +1);
-                    }.bind(playlist[i].uuid);
+                    }.bind(data.listing[i].uuid);
                 }
             }
             function refresh() {
@@ -336,7 +336,7 @@
 
                     if (data.listing != playlist) {
                         playlist = data.listing;
-                        updateQueue();
+                        updateQueue(data);
                     }
                 }, default_err, "status");
             };
