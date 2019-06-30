@@ -6,6 +6,7 @@
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -135,7 +136,10 @@
 
             var pausebtn = document.getElementById("pause");
             var random = document.getElementById("random");
-            $("#queue").sortable();
+            $( function() {
+                $( "#queue" ).sortable();
+                $( "#queue" ).disableSelection();
+            } );
             function clear_suggestions() {
                 suggestions.innerHTML = "";
             }
