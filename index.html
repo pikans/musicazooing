@@ -38,19 +38,19 @@
 
 
         .banner{
-            border: 2px solid black;
             overflow: hidden;
             white-space: nowrap;
+            width:100%;
         }
 
         .div1 {
             display: inline-block;
-            animation: marquee 10s linear infinite;
+            animation: marquee 30s linear infinite;
         }
 
         .div2 {
             display: inline-block;
-            animation: marquee2 10s linear infinite;
+            animation: marquee2 30s linear infinite;
             animation-delay: 0s;
         }
 
@@ -83,8 +83,8 @@
         
 
     <div class="banner">
-        <div class="div1">&nbsp;Play it and Suffer.</div>
-        <div class="div2">&nbsp;Play it and Suffer.</div>
+        <div class="div1">&nbsp;Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer.</div>
+        <div class="div2">&nbsp;Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer. Play it and Suffer.</div>
     </div>
       
       
@@ -171,6 +171,12 @@
                     return minutes.toString() + ":" + left_pad(seconds.toString(), "0", 2);
                 }
             }
+            var max_txt_name = 0;
+            var random_txt = Math.floor(Math.random() * max_txt_name );
+            var movediv1 = document.getElementById("div1");
+            var movediv2 = document.getElementById("div2");
+            //TODO: add functionality to choose random txt file and display contents in divs above 
+            
 
             var nowplaying = document.getElementById("nowplaying");
             var playingtitle = document.getElementById("playingtitle");
@@ -193,7 +199,6 @@
                 $( "#queue" ).sortable();
                 $( "#queue" ).disableSelection();
             } );
-            $('.banner').width($('.jumbotron').width());
             function clear_suggestions() {
                 suggestions.innerHTML = "";
             }
