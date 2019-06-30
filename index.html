@@ -320,18 +320,6 @@
                     }
                     span.innerText = title;
                     deleter.onclick = (function() { delete_uuid(this); }).bind(data.listing[i].uuid);
-                    if (i == 0) {
-                        up.style.display = "none";
-                    }
-                    up.onclick = function() {
-                        reorder(this, -1);
-                    }.bind(data.listing[i].uuid);
-                    if (i == data.listing.length - 1) {
-                        down.style.display = "none";
-                    }
-                    down.onclick = function() {
-                        reorder(this, +1);
-                    }.bind(data.listing[i].uuid);
                 }
             }
             function refresh() {
