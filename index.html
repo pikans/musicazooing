@@ -168,7 +168,7 @@
             function render_suggestions(results) {
                 var outline = "";
                 for (var i = 0; i < results.length; i++) {
-                    outline += "<li class='list-group-item'><span></span><button>queue</button><button>up</button><button>down</button></li>";
+                    outline += "<li><span></span><button>queue</button><button>up</button><button>down</button></li>";
                 }
                 suggestions.innerHTML = outline;
                 for (var i = 0; i < results.length; i++) {
@@ -245,7 +245,7 @@
 
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
-                    total += "<li><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
+                    total += "<li class='list-group-item'><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
                 }
                 queue.innerHTML = total;
                 for (var i = 0; i < data.listing.length; i++) {
