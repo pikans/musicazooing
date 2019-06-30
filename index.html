@@ -198,11 +198,11 @@
             var slider_lock_timeout;
 
             $( function() {
-                $( "#queue" ).sortable(
+                $( "#queue" ).sortable({
                     update: function(ev, ui) {
                         console.log($("#queue").sortable("toArray"));
                     }
-                );
+                });
                 $( "#queue" ).disableSelection();
             } );
             function clear_suggestions() {
