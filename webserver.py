@@ -8,13 +8,10 @@ import json
 import uuid
 import subprocess
 from musicautils import *
-import codecs
 
 redis = redis.Redis()
 
 reboot_ok = (os.getenv("MZ_REBOOT") == "true")
-f=codecs.open("index.html", 'r')
-index_html = f.read()
 
 YOUTUBE_DL = os.path.join(os.getenv("HOME"), ".local", "bin", "youtube-dl")
 
@@ -94,8 +91,8 @@ class Musicazoo:
 
 	@cherrypy.expose
 	def index(self):
-		elems = self.elems()
-		return index_html
+		with open("index.html") as f:
+			return f.read()
 
 	@cherrypy.expose
 	@cherrypy.tools.json_out()
