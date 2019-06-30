@@ -5,6 +5,7 @@ Description=musicazoo webserver service
 EnvironmentFile=DIR/config.env
 ExecStart=/usr/bin/python3 DIR/webserver.py
 Restart=always
+WorkingDirectory=DIR
 
 [Install]
 WantedBy=default.target
