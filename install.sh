@@ -36,6 +36,10 @@ killall -q xscreensaver
 sed -i '/xscreensaver/d' $HOME/.config/lxsession/LXDE/autostart
 
 
+echo "=> Setting up permissions"
+echo "$USER ALL=NOPASSWD:/sbin/reboot" | sudo tee /etc/sudoers.d/musicazoo-reboot > /dev/null
+
+
 echo "=> Starting systemd services"
 sudo systemctl restart redis-server nginx
 sudo loginctl enable-linger $USER
