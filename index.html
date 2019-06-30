@@ -6,6 +6,7 @@
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -69,7 +70,7 @@
 
             <h3>Queued items:</h3>
             <div class="m-4">
-                <ul id="queue">
+                <ul id="queue" class="m-4 list-group">
                     <li>Loading...</li>
                 </ul>
             </div>
@@ -135,7 +136,10 @@
 
             var pausebtn = document.getElementById("pause");
             var random = document.getElementById("random");
-
+            $( function() {
+                $( "#queue" ).sortable();
+                $( "#queue" ).disableSelection();
+            } );
             function clear_suggestions() {
                 suggestions.innerHTML = "";
             }
@@ -245,7 +249,7 @@
 
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
-                    total += "<li><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
+                    total += "<li class='list-group-item'><span></span> | <button>delete</button> | <button>up</button> <button>down</button></li>";
                 }
                 queue.innerHTML = total;
                 for (var i = 0; i < data.listing.length; i++) {
