@@ -135,7 +135,7 @@
 
             var pausebtn = document.getElementById("pause");
             var random = document.getElementById("random");
-
+            $("#queue").sortable();
             function clear_suggestions() {
                 suggestions.innerHTML = "";
             }
@@ -168,7 +168,7 @@
             function render_suggestions(results) {
                 var outline = "";
                 for (var i = 0; i < results.length; i++) {
-                    outline += "<li><span></span><button>queue</button><button>up</button><button>down</button></li>";
+                    outline += "<li class='list-group-item'><span></span><button>queue</button><button>up</button><button>down</button></li>";
                 }
                 suggestions.innerHTML = outline;
                 for (var i = 0; i < results.length; i++) {
