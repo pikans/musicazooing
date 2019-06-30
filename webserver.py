@@ -173,9 +173,8 @@ class Musicazoo:
 
 	@cherrypy.expose
 	def setvolume(self, vol):
-		vol = min(get_volume() + 5, int(vol))
 		try:
-			set_volume(vol)
+			set_volume(int(vol))
 		except ValueError:
 			pass
 
