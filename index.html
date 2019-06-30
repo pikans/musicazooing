@@ -81,11 +81,14 @@
             function json_request(cb, err, endpoint) {
                 var req = new XMLHttpRequest();
                 req.addEventListener("load", function() {
+                    if (!this.responseText) {
+                        return;
+                    }
                     var json = JSON.parse(this.responseText);
                     if (json) {
-                    cb(json);
+                        cb(json);
                     } else {
-                    err("bad json from endpoint " + endpoint);
+                        err("bad json from endpoint " + endpoint);
                     }
                 });
                 req.addEventListener("error", function() {
