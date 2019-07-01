@@ -134,15 +134,6 @@ class Musicazoo:
 			redis.rpush("musicaudit", "removed entry for %s at %s because of deletion request" % (found, time.ctime()))
 			found = self.find(uuid)
 
-	def deduplicate(l):
-		elems = set()
-		result = []
-		for x in l:
-			if x not in elems:
-				elems.add(x)
-				result.append(x)
-		return result
-
 	@cherrypy.expose
 	def reorder(self, uuids):
 		uuids = deduplicate(uuids)
