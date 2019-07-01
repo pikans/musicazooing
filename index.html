@@ -326,6 +326,7 @@
                     total += "<li class='list-group-item'><div class='row'><div class='col-xs'><span class='deleter text-danger oi oi-circle-x'></span></div><div class='vidtitle col'></div></div></li>";
                 }
                 queue.innerHTML = total;
+                queue.children[0].className = "list-group-item active";
                 for (var i = 0; i < data.listing.length; i++) {
                     queue.children[i].id = data.listing[i].uuid;
                     var titlediv = queue.children[i].getElementsByClassName("vidtitle")[0];
@@ -336,7 +337,10 @@
                         title += " (loading)";
                     }
                     titlediv.innerText = title;
-                    deleter.onclick = (function() { delete_uuid(this); }).bind(data.listing[i].uuid);
+                    deleter.onclick = (function() {
+                        document.getElementById(this).className = "list-group-item list-group-item-dark";
+                        delete_uuid(this);
+                    }).bind(data.listing[i].uuid);
                 }
             }
             function refresh() {
