@@ -318,7 +318,7 @@
                     var ytid = data.listing[i].ytid;
                     var title = data.titles[ytid] || ytid;
                     loadbadge.style.display = (data.titles[ytid] && data.loaded[ytid]) ? "none" : "";
-                    titlediv.innerText = title;
+                    titlediv.textContent = title;
                 }
             }
 
@@ -341,7 +341,7 @@
                     if (!data.titles[ytid] || !data.loaded[ytid]) {
                         loadbadge.style.display = "";
                     }
-                    titlediv.innerText = title;
+                    titlediv.textContent = title;
                     deleter.onclick = (function() {
                         document.getElementById(this).className = "list-group-item list-group-item-dark";
                         delete_uuid(this);
