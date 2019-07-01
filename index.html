@@ -191,7 +191,7 @@
             var pausebtn = document.getElementById("pause");
             var random = document.getElementById("random");
 
-            var playlist = [];
+            var playlist = null;
             var slider_lock = false;
             var slider_lock_timeout;
 
@@ -368,7 +368,7 @@
                         slider.value = data.volume !== null ? data.volume : 50;
                     }
 
-                    if (arraysEqual(data.listing.map(x => x.uuid), playlist.map(x => x.uuid))) {
+                    if (playlist !== null && arraysEqual(data.listing.map(x => x.uuid), playlist.map(x => x.uuid))) {
                         lightUpdateQueue(data);
                     } else {
                         playlist = data.listing;
