@@ -316,10 +316,10 @@
             function lightUpdateQueue(data) {
                 for (var i = 0; i < data.listing.length; i++) {
                     var titlediv = document.getElementById(data.listing[i].uuid).getElementsByClassName("vidtitle")[0];
-                    var loadbadge = document.getElementById(data.listing[i].uuid).getElementsByClassName("loadbadge")[0];
+                    var vidload = document.getElementById(data.listing[i].uuid).getElementsByClassName("vidload")[0];
                     var ytid = data.listing[i].ytid;
                     var title = data.titles[ytid] || ytid;
-                    loadbadge.style.display = (data.titles[ytid] && data.loaded[ytid]) ? "none" : "";
+                    vidload.style.display = (data.titles[ytid] && data.loaded[ytid]) ? "none" : "";
                     titlediv.textContent = title;
                 }
             }
@@ -327,7 +327,7 @@
             function updateQueue(data) {
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
-                    total += "<li class='list-group-item'><div class='row'><div class='col-xs'><span class='deleter text-danger oi oi-circle-x'></span></div><div class='vidtitle col'></div><div class='loadbadge col-xs' style='display: none;'><span class='badge badge-secondary badge-pill'>loading</span></div><div class='col-xs'><span class='oi oi-move'></span></div></div></li>";
+                    total += "<li class='list-group-item'><div class='row'><div class='col-xs'><span class='deleter text-danger oi oi-circle-x'></span></div><div class='vidtitle col'></div><div class='vidload col-xs' style='display: none;'><div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div></div><div class='col-xs'><span class='oi oi-move'></span></div></div></li>";
                 }
                 queue.innerHTML = total;
                 if (queue) {
@@ -337,11 +337,11 @@
                     queue.children[i].id = data.listing[i].uuid;
                     var titlediv = queue.children[i].getElementsByClassName("vidtitle")[0];
                     var deleter = queue.children[i].getElementsByClassName("deleter")[0];
-                    var loadbadge = queue.children[i].getElementsByClassName("loadbadge")[0];
+                    var vidload = queue.children[i].getElementsByClassName("vidload")[0];
                     var ytid = data.listing[i].ytid;
                     var title = data.titles[ytid] || ytid;
                     if (!data.titles[ytid] || !data.loaded[ytid]) {
-                        loadbadge.style.display = "";
+                        vidload.style.display = "";
                     }
                     titlediv.textContent = title;
                     deleter.onclick = (function() {
