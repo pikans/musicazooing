@@ -112,9 +112,11 @@
                 <button id="suggest" class="btn btn-secondary">Search</button>
                 <button id="random" style="border:0px" class="btn btn-light">Random</button>          
             </div>
-            
-            <ul id="suggestions">
+
+            <div class="m-4">
+            <ul id="suggestions" class="m-4 list-group">
             </ul>
+            <div>
 
             <h3>Queued items:</h3>
             <div class="m-4">
@@ -244,12 +246,12 @@
             function render_suggestions(results) {
                 var outline = "";
                 for (var i = 0; i < results.length; i++) {
-                    outline += "<li><span></span><button>queue</button><button>up</button><button>down</button></li>";
+                    outline += "<li class='list-group-item'><div class='row'><div class='col-xs'><span class='addbutton oi oi-plus'></span></div><div class='vidtitle col'></div></li>";
                 }
                 suggestions.innerHTML = outline;
                 for (var i = 0; i < results.length; i++) {
-                    suggestions.children[i].children[0].textContent = results[i].title;
-                    suggestions.children[i].children[1].onclick = function() {
+                    suggestions.children[i].getElementsByClassName("vidtitle")[0].textContent = results[i].title;
+                    suggestions.children[i].getElementsByClassName("addbutton")[0].onclick = function() {
                     youtube_id.value = this;
                     suggestions.innerHTML = "";
                     submit.onclick();
@@ -258,15 +260,16 @@
             }
 
             suggest.onclick = function() {
-            if (suggest.disabled) { return; }
-            suggest.disabled = true;
-            json_request(function(data) {
-                render_suggestions(data);
-                suggest.disabled = false;
-            }, function(err) {
-                console.log(err);
-                suggest.disabled = false;
-            }, "search?q=" + encodeURIComponent(youtube_id.value));
+                if (suggest.disabled) { return; }
+                suggest.disabled = true;
+                suggestions.innerHTML = "<div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div>";
+                json_request(function(data) {
+                    render_suggestions(data);
+                    suggest.disabled = false;
+                }, function(err) {
+                    console.log(err);
+                    suggest.disabled = false;
+                }, "search?q=" + encodeURIComponent(youtube_id.value));
             };
             youtube_id.onkeypress = function(e) {
             if (!e) { e = window.event; }
