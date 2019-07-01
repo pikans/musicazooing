@@ -134,32 +134,37 @@ class Musicazoo:
 			redis.rpush("musicaudit", "removed entry for %s at %s because of deletion request" % (found, time.ctime()))
 			found = self.find(uuid)
 
+	def deduplicate(l):
+		elems = set()
+		result = []
+		for x in l:
+			if x not in elems:
+				elems.add(x)
+				result.append(x)
+		return result
+
 	@cherrypy.expose
-	def reorder(self, uuid, dir):
-		try:
-			forward = int(dir) >= 0
-		except ValueError:
-			return "faila"
-		rel = 1 if forward else -1
+	def reorder(self, uuids):
+		uuids = deduplicate(uuids)
 		with redis.pipeline() as pipe:
 			while True:
 				try:
 					pipe.watch("musicaqueue")
 					cur_queue = pipe.lrange("musicaqueue", 0, -1)
-					found = [ent for ent in cur_queue if json.loads(ent.decode())["uuid"] == uuid]
-					if len(found) != 1:
-						return "failb"
-					cur_index = cur_queue.index(found[0])
-					if (cur_index == 0 and not forward) or (cur_index == len(found) - 1 and forward):
-						return "failc"
+					cur_uuids = [json.loads(ent.decode())["uuid"] for ent in cur_queue]
+					reordered_indices = [cur_uuids.index(u) for u in uuids if u in cur_uuids]
+					unrequested_indices = [i for i in range(len(cur_queue)) if i not in reordered_indices]
+					if 0 in unrequested_indices:
+						target_order = [0] + reordered_indices + [i for i in unrequested_indices if i != 0]
+					else:
+						target_order = reordered_indices + unrequested_indices
 					pipe.multi()
-					pipe.lset("musicaqueue", cur_index, cur_queue[cur_index + rel])
-					pipe.lset("musicaqueue", cur_index + rel, cur_queue[cur_index])
+					for dest, src in enumerate(target_order):
+						pipe.lset("musicaqueue", dest, cur_queue[src])
 					pipe.execute()
 					break
 				except WatchError:
 					continue
-		return "ok"
 
 	@cherrypy.expose
 	@cherrypy.tools.json_out()

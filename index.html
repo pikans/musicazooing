@@ -200,7 +200,7 @@
             $( function() {
                 $( "#queue" ).sortable({
                     update: function(ev, ui) {
-                        console.log($("#queue").sortable("toArray"));
+                        reorder($("#queue").sortable("toArray"));
                     }
                 });
                 $( "#queue" ).disableSelection();
@@ -228,8 +228,15 @@
                 json_request(function() { random.disabled=false; }, function(err) { random.disabled = false; console.log(err); }, "random");
             };
 
-            function reorder(uuid, direction) {
-                json_request(function() {}, default_err, "reorder?uuid=" + encodeURIComponent(uuid) + "&dir=" + encodeURIComponent("" + direction));
+            function reorder(uuids) {
+                var query = "";
+                for (var i = 0; i < uuids.length; i++) {
+                    if (i > 0) {
+                        query += "&";
+                    }
+                    query += "uuids=" + encodeURIComponent(uuids[i]);
+                }
+                json_request(function() {}, default_err, "reorder?" + query);
             };
 
             pausebtn.onclick = function() {
