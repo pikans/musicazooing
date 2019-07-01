@@ -327,7 +327,7 @@
             function updateQueue(data) {
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
-                    total += "<li class='list-group-item'><div class='row'><div class='col-xs'><span class='deleter text-danger oi oi-circle-x'></span></div><div class='vidtitle col'></div><div class='loadbadge col-xs' style='display: none;'><span class='badge badge-secondary badge-pill'>loading</span></div></div></li>";
+                    total += "<li class='list-group-item'><div class='row'><div class='col-xs'><span class='deleter text-danger oi oi-circle-x'></span></div><div class='vidtitle col'></div><div class='loadbadge col-xs' style='display: none;'><span class='badge badge-secondary badge-pill'>loading</span></div><div class='col-xs'><span class='oi oi-move'></span></div></div></li>";
                 }
                 queue.innerHTML = total;
                 if (queue) {
