@@ -303,6 +303,18 @@
                 return true;
             }
 
+            function lightUpdateQueue(data) {
+                for (var i = 0; i < data.listing.length; i++) {
+                    var span = document.getElementById(data.listing[i].uuid).children[0];
+                    var ytid = data.listing[i].ytid;
+                    var title = data.titles[ytid] || ytid;
+                    if (!data.titles[ytid] || !data.loaded[ytid]) {
+                        title += " (loading)";
+                    }
+                    span.innerText = title;
+                }
+            }
+
             function updateQueue(data) {
                 var total = "";
                 for (var i = 0; i < data.listing.length; i++) {
@@ -347,7 +359,9 @@
                         slider.value = data.volume !== null ? data.volume : 50;
                     }
 
-                    if (!arraysEqual(data.listing.map(x => x.uuid), playlist.map(x => x.uuid))) {
+                    if (arraysEqual(data.listing.map(x => x.uuid), playlist.map(x => x.uuid))) {
+                        lightUpdateQueue(data);
+                    } else {
                         playlist = data.listing;
                         updateQueue(data);
                     }
