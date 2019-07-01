@@ -11,9 +11,8 @@ def path_for(ytid):
 def deduplicate(l):
 	elems = set()
 	result = []
-		for x in l:
-			if x not in elems:
-				elems.add(x)
-				result.append(x)
-		return result
-
+	for x in l:
+		if x not in elems:
+			elems.add(x)
+			result.append(x)
+	return result
