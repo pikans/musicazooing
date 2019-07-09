@@ -333,7 +333,7 @@
                 for (var i = 0; i < data.listing.length; i++) {
                     queue.children[i].id = data.listing[i].uuid;
                     var titlediv = queue.children[i].getElementsByClassName("vidtitle")[0];
-                    var deleter = queue.children[i].getElementsByClassName("deleter")[0];
+                    var deleter = $('#queue #' + data.listing[i].uuid + ' .deleter');
                     var vidload = queue.children[i].getElementsByClassName("vidload")[0];
                     var ytid = data.listing[i].ytid;
                     var title = data.titles[ytid] || ytid;
@@ -341,10 +341,10 @@
                         vidload.style.display = "";
                     }
                     titlediv.textContent = title;
-                    deleter.onclick = (function() {
+                    deleter.on("click touchstart", function() {
                         document.getElementById(this).className = "list-group-item list-group-item-dark";
                         delete_uuid(this);
-                    }).bind(data.listing[i].uuid);
+                    }.bind(data.listing[i].uuid));
                 }
             }
             function refresh() {
